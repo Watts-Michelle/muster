@@ -1,0 +1,2099 @@
+FORMAT: 1A
+HOST: http://muster.dev.flipsidegroup.com/api/v1
+
+# Muster
+
+Welcome to the Muster API reference
+
+# Access URL
+
+Staging URL: http://muster.dev.flipsidegroup.com
+
+All endpoints are at **/api/v1**
+
+# Data Structures
+
+## user (object)
++ uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string)
++ username: TestMember (string)
++ facebook_userID: `124607047974467` (string)
++ facebook_name: Test Member (string)
++ location: Fleet (string)
++ location_latitude: `51.2773`
++ location_longitude: `-0.842655`
++ localgamingstore_account: false (boolean)
++ xp: 145 (number)
++ sessions_played: 5 (number)
++ user_status: Active (string)
++ profile_image: http://muster.dev.flipsidegroup.com/assets/Users/0de8c173-4322-4be9-b6c6-1047dca9372b/image/profile.jpg", (string)
++ friends (array[friend])
++ games (array[game])
++ session_invitations (array[invitation])
++ join_requests (array[gamingsessionjoinrequest])
+
+## friend (object)
++ uid: `243ab652-70cd-4ab5-9057-7bb3570116d5` (string)
++ user (user)
+
+## gamingsession (object)
++ uid: `8ac35b25-d222-4276-97d0-abf2a62ee751` (string)
++ name: Test Gaming Session (string)
++ description: This is a greate gaming session! (string)
++ start_date: `1481879840941` (number)
++ end_date: `1481879840941` (number)
++ player_limit: 5 (number)
++ game_status: Active (string)
++ location: Fleet (string)
++ location_latitude: `51.2773`
++ location_longitude: `-0.842655`
++ privacy_setting (enum[number])
+    + 0 - Public,
+    + 1 - Private,
+    + 2 - Friends,
++ hidden: false (boolean)
++ result (enum[number])
+    + 0 - Victory,
+    + 1 - Defeat,
+    + 2 - Stalemate,
+    + 3 - No Session
++ gamingsession_image: http://muster.dev/assets/GamingSessions/8ac35b25-d222-4276-97d0-abf2a62ee751/image/game.jpg (string)
++ host (user)
++ venue (venue)
++ game (game)
+
+## gamingsessionjoinrequest (object)
++ uid: `` (string)
++ join: true (boolean)
++ user (user)
++ gaming_session (gamingsession)
+
+## game (object)
++ uid: `ea62395f-57a0-4798-80de-0c6663549d2d` (string)
++ title: 7 Ronin (string)
++ logo: (string)
++ minimum_players: 2 (string)
++ maximum_players: 2 (string)
++ playing_time: 30 (string)
++ year_published: 2013 (string)
+
+## invitation (object)
++ uid: (string)
++ invitation_status: (string)
+
+## joinrequest (object)
++ uid: (string)
++ request_status: (string)
+
+## badge (object)
++ uid: `df57c092-4b4e-4944-8749-5a1747c027de` (string)
++ name: Founder Badge (string)
+
+## experiencepoint (object)
++ points: 1481879840941 (number)
+
+## venue (object)
++ uid: `a648cb6b-5356-42a7-809e-c803a46584fa` (string)
++ name: Test Venue (string)
++ image: (string)
++ location: Fleet (string)
++ location_latitude: `51.2773`
++ location_longitude: `-0.842655`
++ opening_hours (venueopeninghour)
++ gamingsessions (array[gamingsession])
+
+## venueopeninghour (object)
++ day (enum[number])
++ 0 - Monday,
++ 1 - Tuesday,
++ 2 - Wednesday,
++ 3 - Thursday,
++ 4 - Friday,
++ 5 - Saturday,
++ 6 - Sunday
++ from: 1481879840941 (number)
++ till: 1481879840941 (number)
+
+## chat (object)
++ uid: (string)
++ title: (string)
++ description: (string)
++ messages array([message])
+
+## message (object)
++ uid: (string)
++ title: (string)
++ description: (string)
+
+##notification (object)
++ uid: (string)
+
+
+# Group Authentication
+
+## Login [/auth/login]
+
+### Login - Facebook [POST]
+
++ Request (application/json)
+
+    + Attributes
+        + access_token (string, required) - Facebook access token
+        + grant_type: facebook (string, required) - The grant type, should always be facebook
+        + client_id: muster_dev (string, required) - The client id for the project
+        + client_secret: nMPIWmlocyFeNdmpogcKNEGDYnqodeKIcmGLsuqbkUocmW (string, required) - The client secret for the project
+    + Body
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + access_token: pwPFntyiXvwvG0VJ213w4jTITmGeBGilKvb5CVvl (string, required)
+        + token_type: bearer (string, required)
+        + expires_in: 14400 (number, required)
+        + refresh_token: ZNZ3rt7FgnW55diZKjyexo3upmETAwQEVaJ9o2KC (string, required)
+        + exists: 1 (number, required) - did user exist before login (can only be 0 for facebook)
+        + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string)
+        + status: success (string, required)
+        
+### Login - Refresh Token [POST]
+
++ Request (application/json)
+
+    + Headers
+    
+    + Attributes
+        + refresh_token: wbjIz4egpmQXxyUjV8NvKAN4chJwFo7rJJvCyrFd (string, required) - Refresh token from an existing login
+        + grant_type: refresh_token (string, required) - The grant type
+        + client_id: muster_dev (string, required) - The client id for the project
+        + client_secret: nMPIWmlocyFeNdmpogcKNEGDYnqodeKIcmGLsuqbkUocmW (string, required) - The client secret for the project
+            
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + access_token: 5eDvmhGol6Aw8ebQhnlN6FwxDR5TkLaA3e07obhb (string, required)
+        + token_type: bearer (string, required)
+        + expires_in: 14400 (number, required)
+        + refresh_token: poowklhz3z16Y7JxKZdVVEg6epHVQhMY2iazYIaC (string, required)
+        + exists: 1 (number, required) - did user exist before login (can only be 0 for facebook)
+        + status: success (string, required)
+    
+
+# Logout [/auth/logout]
+
+## Logout [DELETE]
+
+
++ Request
+
+    + Headers
+        
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string, required)
+
+
+# Group User Endpoints
+
+## User Push Token [/users/pushtoken]
+
+### Push Token [POST]
+
+
++ Request
+
+    + Headers
+        
+            Authorization: Bearer {access_token}
+        
+    + Attributes
+        
+        + push_token: tnaipkDDkJT6rHPTxnGFHIGKGCbqkwZxppA0Q3dg (string, required) - firebase token to identify a device for app pushes
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string, required)  
+## User Endpoints [/users]
+Player search - can search players by name and sort by Game or Location.
+
+### Get All Users [GET /users{?fieldset,search_name,filter,game_uuid,location_origin,distance}]
+
++ Parameters
+    + fieldset: (array, optional) - Example: gamingsessions,friends,playedgames,ownedgames,sessioninvitations,joinrequests
+    + search_name: Smith (string, optional) - a text string to search by player username
+    + filter: (array, optional) - Example:  game,location
+    + game_uuid: (array, optional) - Example: 12312-312312-3123,3331123-312312-333333 - required if game filter specified
+    + location_origin: (array, optional) - 51.336036,-0.2673819999999978 - required if location filter specified
+    + distance: 4000
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes (object)
+        + status: success (string)
+        + users (array)
+            + uid: `1275dc64-b441-46f6-a573-957f4fe1d676` (string)
+            + blocked_by_current_user: 1
+            + username: TestMember (string)
+            + facebook_name: Test Member (string)
+            + profile_image: http://muster.dev.flipsidegroup.com/assets/Users/0de8c173-4322-4be9-b6c6-1047dca9372b/image/profile.jpg", (string)
+            + location: Fleet (string)
+            + location_latitude: `51.2773`
+            + location_longitude: `-0.842655`
+            + joined_date: `123456789`
+            + xp: 145
+            + sessions_played: 5
+            + user_status: Active (string)
+            + localgamingstore_account: false
+
+### Get Specific User [GET /users/{user_uid}{?fieldset}]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string)
+    + fieldset (array, optional) - Example: gamingsessions,friends,playedgames,ownedgames,sessioninvitations,joinrequests
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes (object)
+        + status: success (string)
+        + user (object)
+            + uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string)
+            + username: TestMember (string)
+            + facebook_name: Test Member
+            + profile_image: http://muster.dev.flipsidegroup.com/assets/Users/0de8c173-4322-4be9-b6c6-1047dca9372b/image/profile.jpg", (string)            
+            + location: Fleet (string)
+            + location_latitude: `51.2773`
+            + location_longitude: `-0.842655`
+            + joined_date: `524016000` (number)
+            + xp: 145 (number)
+            + sessions_played: 5 (number)
+            + user_status: Active (string)
+            + localgamingstore_account: false (boolean)
+        + gamingsessions (object)
+            + uid: `8ac35b25-d222-4276-97d0-abf2a62ee751` (string)
+            + name: Test Gaming Session (string)
+            + description: This is a great gaming session! (string)
+            + start_time: `123456789` (number)
+            + end_date: `123456789` (number)
+            + player_limit: 5 (number)
+            + game_status: complete (string)
+            + location: Fleet (string)
+            + location_latitude: `51.2773`
+            + location_longitude: `-0.842655`
+            + privacy_setting: Public (string)
+            + hidden: false (boolean)
+            + result: (string)
+            + gamingsession_image: http://muster.dev/assets/GamingSessions/8ac35b25-d222-4276-97d0-abf2a62ee751/image/game.jpg (string)
+            + host_uid: `36f8edd8-fb1b-4858-bcbb-e8c3942a5d40` (string)
+            + venue_uid: `a648cb6b-5356-42a7-809e-c803a46584fa` (string)
+            + game_uid: `ea62395f-57a0-4798-80de-0c6663549d2d` (string)
+        + friends (object)
+            + uid: `243ab652-70cd-4ab5-9057-7bb3570116d5` (string)
+            + username: TestMember (string)
+            + facebook_name: Test Member
+            + location: Fleet (string)
+            + location_latitude: `51.2773`
+            + location_longitude: `-0.842655`
+            + profile_image: http://muster.dev.flipsidegroup.com/assets/Users/0de8c173-4322-4be9-b6c6-1047dca9372b/image/profile.jpg", (string)
+            + top_games (array)
+        + played_games (object)
+            + uid: `ea62395f-57a0-4798-80de-0c6663549d2d` (string)
+            + title: 7 Ronin (string)
+            + logo: (string)
+        + owned_games (object)
+            + uid: `57a0-4798-80de-0c6663549d2d` (string)
+            + title: (string)
+            + logo: (string)
+        + session_invitations (invitation)
+        + join_requests (joinrequest)
+
+### Update User [PUT /users/{user_uid}]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string)
+
++ Request (application/json)
+
+    + Attributes (object)
+        + status: success (string)
+        + user (object)
+            + user_status: Active (string, optional)  - Active, Deleted, Ready, Defeated, Ensorceled
+            + username: TestMember (string, optional)
+            + location: Fleet (string)
+            + location_latitude: `51.2773`
+            + location_longitude: `-0.842655`
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+
+### Delete User [DELETE /users/{user_uid}]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+
+## User Login Count [/users/{user_uid}/logincount]        
+        
+### Get User Login Count [GET]
+
+
++ Request
+
+    + Headers
+
+            Accept: application/vnd.studytracks.v1+json
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + consecutive_login: 5 (number)
+        + status: success (string)
+
+## User Gaming Sessions [/users/{user_uid}/gamingsessions/{mode}]
+Upcoming gamingsessions screen - gamingsessions hosting, gamingsessions attending & gamingsessions invited to.
+### Get User Gaming Sessions [GET]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string)
+    + mode: `future` or `past` (string, optional)
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + gamingsessions (object)
+            + uid: `8ac35b25-d222-4276-97d0-abf2a62ee751` (string)
+            + name: Test Gaming Session (string)
+            + description: This is a greate gaming session! (string)
+            + start_date: `123456789` (number)
+            + end_date: `123456789` (number)
+            + player_limit: 5 (number)
+            + game_status: complete (string)
+            + location: Fleet (string)
+            + location_latitude: `51.2773`
+            + location_longitude: `-0.842655`
+            + privacy_setting: Public (string)
+            + hidden: false (boolean)
+            + result: (string)
+            + gamingsession_image: http://muster.dev/assets/GamingSessions/8ac35b25-d222-4276-97d0-abf2a62ee751/image/game.jpg (string)
+            + host_uid: `36f8edd8-fb1b-4858-bcbb-e8c3942a5d40` (string)
+            + venue (object)
+                + uid: `a648cb6b-5356-42a7-809e-c803a46584fa` (string)
+                + name: Test Venue (string)
+                + location: Fleet (string)
+                + location_latitude: `51.2773`
+                + location_longitude: `-0.842655`
+            + game (game)
+
+### Get User Gaming Sessions By Time [GET /users/{user_uid}/gamingsessionsbytime]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string)
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + gamingsessions (object)
+            + past (array)
+                + (object):
+                    + uid: `8ac35b25-d222-4276-97d0-abf2a62ee751` (string)
+                    + name: Test Gaming Session (string)
+                    + description: This is a great gaming session! (string)
+                    + start_date: `123456789` (number)
+                    + end_date: `123456789` (number)
+                    + player_limit: 5 (number)
+                    + game_status: Active (string)
+                    + privacy_setting: Public (string)
+                    + hidden: false (boolean)
+                    + result: '' (string)
+                    + gamingsession_image: http://muster.dev/assets/GamingSessions/8ac35b25-d222-4276-97d0-abf2a62ee751/image/game.jpg (string)
+                    + host_uid: `36f8edd8-fb1b-4858-bcbb-e8c3942a5d40` (string)
+                    + venue (object)
+                        + uid: `a648cb6b-5356-42a7-809e-c803a46584fa` (string)
+                        + name: Test Venue (string)
+                        + location: Fleet (string)
+                        + location_latitude: `51.2773`
+                        + location_longitude: `-0.842655`
+                    + location (object)
+                        + uid: `a648cb6b-5356-42a7-809e-c803a46584fa` (string)
+                        + location: Fleet (string)
+                        + location_latitude: `51.2773`
+                        + location_longitude: `-0.842655`
+                    + game (object)
+                        + uid: `a648cb6b-5356-42a7-809e-c803a46584fa` (string)
+                        + title: Test Venue (string)
+                        + name: Test Venue (string)
+                        + minimum_players: 0 (number)
+                        + maximum_players: Test Venue (number)
+                        + playing_time: 0 (string)
+                        + year_published: 0 (number)
+                    + attending (array)
+                    + invited (array)
+                    + winners (array)
+                    + request_status: '' (string)
+            + current(array)
+                + (object):
+                    + like_in_past
+            + future(array)
+                + (object):
+                    + like_in_past
+
+
+## User Gaming Session Invitations [/users/{user_uid}/gamingsessioninvitations]
+### Get User Gaming Session Invitations [GET]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + session_invitations (array[invitation])
+
+## User Join Requests [/users/{user_uid}/joinrequests]
+### Get User Gaming Session Join Requests [GET]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + join_requests (array[joinrequest])
+
+
+## User Profile Image [/users/{user_uid}/profileimage]
+### Get User Profile Image [GET]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + profile_image: http://muster.dev.flipsidegroup.com/assets/Users/0de8c173-4322-4be9-b6c6-1047dca9372b/image/profile.jpg", (string)
+
+### Update User Profile Image [POST]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string)
+
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+            Content-Type: multipart/form-data
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        
+
+## User Location [/users/{user_uid}/location]
+### Get User Location [GET]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + location: Fleet (string)
+        + location_latitude: `51.2773`
+        + location_longitude: `-0.842655`
+        
+## User Emails [/users/contactus]
+### User Contact Us [POST /users/contactus]
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+            
+    + Attributes
+        + message: test (string, required)  
+        
+    + Body    
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + sent: true (boolean)      
+
+
+## User Status [/users/{user_uid}/status]
+### Get User Status [GET]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + user_status: Active (string)
+
+
+### Delete User Status [DELETE]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+
+
+## User Owned Games [/users/{user_uid}/ownedgames]
+### Get User Owned Games [GET]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + games (array[game])
+
+### Update User Owned Games [PUT /users/{user_uid}/ownedgames]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string, required)
+    + game_uid: `ea62395f-57a0-4798-80de-0c6663549d2d` (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+            
+    + Attributes
+        + games_list (array[game_uuid], required)
+        
+    + Body    
+
++ Response 200 (application/json; charset=utf-8)
+    
+    + Attributes
+        + status: success (string)
+
+### Delete User Owned Game [DELETE /users/{user_uid}/ownedgames]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+            
+    + Attributes
+        + games_list (array[game_uuid], required)
+        
+    + Body            
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        
+## User Played Games [/users/{user_uid}/playedgames]
+### Get User Played Games [GET]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + games (array[game])
+
+### Update User Played Games [PUT /users/{user_uid}/playedgames]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+            
+    + Attributes
+        + games_list (array[game_uuid], required)
+        
+    + Body            
+
++ Response 200 (application/json; charset=utf-8)
+    
+    + Attributes
+        + status: success (string)
+
+### Delete User Played Game [DELETE /users/{user_uid}/playedgames]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+    + Attributes
+        + games_list (array[game_uuid], required)
+        
+    + Body                   
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)        
+
+## User Badges [/users/{user_uid}/badges]
+### Get User Badges [GET]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + badges (array[badge])
+
+### Update User Badges [PUT /users/{user_uid}/badges/{badge_uid}]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string, required)
+    + badge_uid: `df57c092-4b4e-4944-8749-5a1747c027de` (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+            
+    + Attributes
+        + game_array: game (array)
+
++ Response 200 (application/json; charset=utf-8)
+    
+    + Attributes
+        + status: success (string)
+
+### Delete User Badges [DELETE /users/{user_uid}/badges/{badge_uid}]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string, required)
+    + badge_uid: `df57c092-4b4e-4944-8749-5a1747c027de` (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+
+## User Notifications [/users/{user_uid}/notifications]
+### Get All User Notifications [GET]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + notifications  (array[notification])
+
+### Get Specific User Notification [GET /users/{user_uid}/notifications/{notification_uid}/one]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string, required)
+    + notification_uid: `abada49a-5219-4406-999d-36e45d9f6cb1` (string, required)
+
++ Request
+
+    + Headers
+        
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + notification (notification)
+
+### Dismiss Specific User Notification [PUT /users/{user_uid}/notifications/{notification_uid}/dismiss]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string, required)
+    + notification_uid: `abada49a-5219-4406-999d-36e45d9f6cb1` (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+
+
+## Local Gaming Store Account [/users/{user_uid}/localgamingstore]
+Requested through form on app.
+### Request LGS Account - TBC [POST]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b` (string, requried)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+
+### Get LGS Users [GET /users/localgamingstore]
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + users (array)
+            + uid: `1275dc64-b441-46f6-a573-957f4fe1d676` (string)
+
+
+## User Blocked List [/users/{user_uid}/blockedusers]
+### Get Specific User Blocked List [GET]
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + users (array)
+            + uid: `1275dc64-b441-46f6-a573-957f4fe1d676` (string)
+        
+## Block Specific User [/users/{user_uid}/block/{blocked_user_uid}]
+### Block Specific User [POST]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b' (string, required)
+    + blocked_user_uid: `abada49a-5219-4406-999d-36e45d9f6cb1' (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        
+## Unblock Users [/users/{user_uid}/unblock]
+### Unblock Users [POST]
+
++ Parameters
+    + user_uid: `0de8c173-4322-4be9-b6c6-1047dca9372b' (string, required)
+    
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
+    + Attributes
+        + users: (array, required) - Array of blocked UIDs
+
+    + Body
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)            
+
+## Report Specific User [/users/{user_uid}/report/{reported_user_uid}]
+### Report Specific User [POST]
+
++ Parameters
+    + user_uid: '0de8c173-4322-4be9-b6c6-1047dca9372b' (string, required)
+    + reported_user_uid: 'abada49a-5219-4406-999d-36e45d9f6cb1' (string, required)
+    
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+
+
+# Group Game Endpoints
+
+## Game Endpoints [/games]
+### Get All Games [GET]
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + games (array[game])
+
+### Get Specific Game [GET /games/{game_uid}]
+
++ Parameters
+    + game_uid: 'ea62395f-57a0-4798-80de-0c6663549d2d' (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + game (game)
+
+# Group Badge Endpoints
+
+## Badge Endpoints [/badges]
+### Get All Badges [GET]
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + badges (array[game])
+
+### Get Specific Badge [GET /badges/{badge_uid}]
+
++ Parameters
+    + badge_uid: 'df57c092-4b4e-4944-8749-5a1747c027de' (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + badge (badge)
+
+# Group Friend Endpoints
+
+## Friend Endpoints [/users/{user_uid}/friends]
+Users can search friends list by name, location or games.
+### Get User Friends [GET /users/{user_uid}/friends{?fieldset,search_name,filter,game_name,location_origin,distance}]
+
++ Parameters
+    + fieldset: (array, optional) - Example: gamingsessions,friends,playedgames,ownedgames,sessioninvitations,joinrequests
+    + search_name: Smith (string, optional) - a text string to search by player username
+    + filter: (array, optional) - Example:  game,location
+    + game_name: (array, optional) - Example: chess,monopoly - required if game filter specified
+    + location_origin: (array, optional) - 51.336036,-0.2673819999999978 - required if location filter specified
+    + distance: 4000     
+        
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + friends (object)
+            + user_uid: `243ab652-70cd-4ab5-9057-7bb3570116d5` (string)
+            + username: TestMember (string)
+            + facebook_name: Test Member (string)
+            + profile_image: http://muster.dev.flipsidegroup.com/assets/Users/0de8c173-4322-4be9-b6c6-1047dca9372b/image/profile.jpg", (string)
+            + location: Fleet (string)
+            + location_latitude: `51.2773` (number)
+            + location_longitude: `-0.842655` (number)
+            + joined_date: `524016000` (number)
+            + user_status: Active (string)
+
+### Delete Friend [DELETE /users/{user_uid}/friends/{friend_uid}]
+
++ Parameters
+    + friend_uid: '243ab652-70cd-4ab5-9057-7bb3570116d5' (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+
+
+## Friend Request [/users/{user_uid}/friends/{friend_uid}/request]
+In-app notification is sent.
+### Send Friend Request [PUT]
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+    
+    + Attributes
+        + status: success (string)
+
+### Send Batch Friends Requests [PUT /users/{user_uid}/batchfriends]
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+            
+    + Attributes
+        + requests: (array, optional) - Array of Friends UIDs
+
+    + Body
+    
++ Response 200 (application/json; charset=utf-8)
+    
+    + Attributes
+        + requests: 0 (number) -number of requestes to be performed
+        + sent: 0 (number) - actual number of invitations sent
+
+        
+### Accept Friend Request [PUT /users/{user_uid}/friends/{friend_uid}/accept]
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+    
+    + Attributes
+        + status: success (string)
+
+### Reject Friend Request [PUT /users/{user_uid}/friends/{friend_uid}/reject]
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+    
+    + Attributes
+        + status: success (string)
+
+
+# Group Gaming Session Endpoints
+
+## Gaming Session Endpoints [/gamingsessions]
+All invitees will receive a push notification. Users can search gamingsessions by name and sort by Game or Location.
+### Get All Gaming Sessions [GET /gamingsessions{?fieldset,search_name,filter,game_uuid,location_origin,distance}]
+
++ Parameters
+    + fieldset: (array, optional) - Example: game,venue
+    + search_game: Monopoly (string, optional) - a text string to search gaming session by game
+    + filter: (array, optional) - Example:  game,location
+    + game_uuid: (list, optional) - Example: 123123-3321312-11123321,76546564-65645645645-555666 - required if game filter specified
+    + location_origin: (array, optional) - 51.336036,-0.2673819999999978 - required if location filter specified
+    + distance: 4000
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+    
+    + Attributes
+        + status: success (string)
+        + gaming_sessions (object)
+            + uid: `8ac35b25-d222-4276-97d0-abf2a62ee751` (string)
+            + name: Test Gaming Session (string)
+            + description: This is a great gaming session! (string)
+            + start_date: `123456789` (number)
+            + end_date: `123456789` (number)
+            + player_limit: 5 (number)
+            + game_status: complete (string)
+            + location: Fleet (string)
+            + location_latitude: `51.2773`
+            + location_longitude: `-0.842655`
+            + privacy_setting: Public (string)
+            + hidden: false (boolean)
+            + result: '' (string)
+            + gamingsession_image: http://muster.dev/assets/GamingSessions/8ac35b25-d222-4276-97d0-abf2a62ee751/image/game.jpg (string)
+            
+### Get Specific Gaming Session [GET /gamingsessions/{gamingsession_uid}]
+
++ Parameters
+    + gamingsession_uid: `8ac35b25-d222-4276-97d0-abf2a62ee751` (string)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + gamingsession (object)
+            + uid: `8ac35b25-d222-4276-97d0-abf2a62ee751` (string)
+            + name: Test Gaming Session (string)
+            + description: This is a great gaming session! (string)
+            + start_date: `123456789` (number)
+            + end_date: `123456789` (number)
+            + player_limit: 5 (number)
+            + game_status: Active (string)
+            + location: Fleet (string)
+            + location_latitude: `51.2773` (number)
+            + location_longitude: `-0.842655` (number)
+            + privacy_setting: Public (string)
+            + hidden: false (boolean)
+            + result: '' (string)
+            + gamingsession_image: http://muster.dev/assets/GamingSessions/8ac35b25-d222-4276-97d0-abf2a62ee751/image/game.jpg (string)
+            + host_uid: `36f8edd8-fb1b-4858-bcbb-e8c3942a5d40` (string)
+            + venue (object)
+                + uid: `a648cb6b-5356-42a7-809e-c803a46584fa` (string)
+                + name: Test Venue (string)
+                + location: Fleet (string)
+                + location_latitude: `51.2773`
+                + location_longitude: `-0.842655`
+            + game (game)
+
+### Create Gaming Session [POST]
++ Request (multipart/form-data)
+
+    + Attributes
+        + gaming_session (object)
+            + name: Test Gaming Session (string, required)
+            + description: This is a great gaming session! (string)
+            + start_date: `123456789` (number, required)
+            + end_date: `123456789` (number, required)
+            + player_limit: 5 (number)
+            + game_status: complete (string)
+            + location: Fleet (string)
+            + location_latitude: `51.2773` (number)
+            + location_longitude: `-0.842655` (number)
+            + privacy_setting: Public (string)
+            + hidden: false (boolean)
+            + venue_uid: `a648cb6b-5356-42a7-809e-c803a46584fa` (string)
+            + game_uid: `ea62395f-57a0-4798-80de-0c6663549d2d` (string, required)
+            + invitations: `ebfbc886-ba37-4d16-9aa2-937bbc510564` (array, optional) 
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + gamingsession (object)
+            + uid: `8ac35b25-d222-4276-97d0-abf2a62ee751` (string)
+            + name: Test Gaming Session (string)
+            + description: This is a great gaming session! (string)
+            + start_date: `123456789` (number)
+            + end_date: `123456789` (number)
+            + player_limit: 5 (number)
+            + game_status: Active (string)
+            + privacy_setting: Public (string)
+            + hidden: false (boolean)
+            + result: '' (string)
+            + gamingsession_image: http://muster.dev/assets/GamingSessions/8ac35b25-d222-4276-97d0-abf2a62ee751/image/game.jpg (string)
+            + host_uid: `36f8edd8-fb1b-4858-bcbb-e8c3942a5d40` (string)
+            + venue (object)
+                + uid: `a648cb6b-5356-42a7-809e-c803a46584fa` (string)
+                + name: Test Venue (string)
+                + location: Fleet (string)
+                + location_latitude: `51.2773`
+                + location_longitude: `-0.842655`
+            + location (object)
+                + uid: `a648cb6b-5356-42a7-809e-c803a46584fa` (string)
+                + location: Fleet (string)
+                + location_latitude: `51.2773`
+                + location_longitude: `-0.842655`
+            + game (object)
+                + uid: `a648cb6b-5356-42a7-809e-c803a46584fa` (string)
+                + title: Test Venue (string)
+                + name: Test Venue (string)
+                + minimum_players: 0 (number)
+                + maximum_players: Test Venue (number)
+                + playing_time: 0 (string)
+                + year_published: 0 (number)
+            + attending (array)
+            + invited (array)
+            + winners (array)
+            + request_status: '' (string)
+        + invitations (object): 
+            + requested (number)
+            + sent (number)
+
+### Update Gaming Session [POST /gamingsessions/{gamingsession_uid}]
+
++ Parameters
+    + gamingsession_uid: '8ac35b25-d222-4276-97d0-abf2a62ee751' (string, required)
+
++ Request (application/json)
+
+    + Attributes
+        + gaming_session (object)
+            + name: Test Gaming Session (string)
+            + description: This is a great gaming session! (string)
+            + start_date: `123456789` (number)
+            + end_date: `123456789` (number)
+            + player_limit: 5 (number)
+            + game_status: complete (string)
+            + location: Fleet (string)
+            + location_latitude: `51.2773`
+            + location_longitude: `-0.842655`
+            + privacy_setting: 'Public(string)
+            + hidden: false (boolean)
+            + result: (string)
+            + venue_uid: `a648cb6b-5356-42a7-809e-c803a46584fa` (string)
+            + game_uid: `ea62395f-57a0-4798-80de-0c6663549d2d` (string)
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + gamingsession (object)
+            + uid: `8ac35b25-d222-4276-97d0-abf2a62ee751` (string)
+            + name: Test Gaming Session (string)
+            + description: This is a great gaming session! (string)
+            + start_date: `123456789` (number)
+            + end_date: `123456789` (number)
+            + player_limit: 5 (number)
+            + game_status: Active (string)
+            + privacy_setting: Public (string)
+            + hidden: false (boolean)
+            + result: '' (string)
+            + gamingsession_image: http://muster.dev/assets/GamingSessions/8ac35b25-d222-4276-97d0-abf2a62ee751/image/game.jpg (string)
+            + host_uid: `36f8edd8-fb1b-4858-bcbb-e8c3942a5d40` (string)
+            + venue (object)
+                + uid: `a648cb6b-5356-42a7-809e-c803a46584fa` (string)
+                + name: Test Venue (string)
+                + location: Fleet (string)
+                + location_latitude: `51.2773`
+                + location_longitude: `-0.842655`
+            + location (object)
+                + uid: `a648cb6b-5356-42a7-809e-c803a46584fa` (string)
+                + location: Fleet (string)
+                + location_latitude: `51.2773`
+                + location_longitude: `-0.842655`
+            + game (object)
+                + uid: `a648cb6b-5356-42a7-809e-c803a46584fa` (string)
+                + title: Test Venue (string)
+                + name: Test Venue (string)
+                + minimum_players: 0 (number)
+                + maximum_players: Test Venue (number)
+                + playing_time: 0 (string)
+                + year_published: 0 (number)
+            + attending (array)
+            + invited (array)
+            + winners (array)
+            + request_status: '' (string)
+
+### Delete Gaming Session [DELETE /gamingsessions/{gamingsession_uid}]
+
++ Parameters
+    + gamingsession_uid: '8ac35b25-d222-4276-97d0-abf2a62ee751' (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        
+## Gaming Session Image [/gamingsessions/{gamingsession_uid}/image] 
+
+### Get Gaming Session Image [GET]
+
++ Parameters
+    + gamingsession_uid: '8ac35b25-d222-4276-97d0-abf2a62ee751' (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + image: http://example.com/images/test.jpg (string)
+
+### Update Gaming Session Image [POST]
+
++ Parameters
+    + gamingsession_uid: '8ac35b25-d222-4276-97d0-abf2a62ee751' (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+            Content-Type: multipart/form-data
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+
+
+## Gaming Session Invitations [/gamingsessions/{gamingsession_uid}/sessioninvitations]
+Invite players to a gaming session - Players receive in-app notification.
+Join a gaming session sends an automated message to the host.
+User accepts invite to a gaming session - Host receives in-app notification.
+Host accepts a request to join a gaming session - Player receives in-app notification.
+### Get All Gaming Session Invitations [GET]
+
++ Parameters
+    + gamingsession_uid: '8ac35b25-d222-4276-97d0-abf2a62ee751' (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + session_invitations (object)
+            + uid: `e646202d-f5c4-44d7-b7e3-390ce43f308f` (string)
+            + invitation_status: Accepted (string)
+            + invitation_sender (object)
+                + uid: `1275dc64-b441-46f6-a573-957f4fe1d676` (string)
+                + username: TestMember (string)
+                + facebook_name: Test Member
+                + profile_image: http://muster.dev.flipsidegroup.com/assets/Users/0de8c173-4322-4be9-b6c6-1047dca9372b/image/profile.jpg", (string)
+                + location: Fleet (string)
+                + location_latitude: `51.2773`
+                + location_longitude: `-0.842655`
+                + joined_date: `524016000` (number)
+                + xp: 250 (number)
+                + sessions_played: 5 (number)
+                + user_status: Active (string)
+            + gaming_session (object)
+                + uid: `8ac35b25-d222-4276-97d0-abf2a62ee751` (string)
+                + name: The really great gaming session (string)
+                + description: An absolutely great gaming session. (string)
+                + start_date: `123456789` (number)
+                + end_date: `123456789` (number)
+                + player_limit: 5 (number)
+                + game_status: Active (string)
+                + location: Fleet (string)
+                + location_latitude: `51.2773`
+                + location_longitude: `-0.842655`
+                + privacy_setting: Public (string)
+                + hidden: false (boolean)
+                + result: '' (string)
+                + gamingsession_image: http://muster.dev/assets/GamingSessions/8ac35b25-d222-4276-97d0-abf2a62ee751/image/game.jpg (string)
+                + host_uid: `36f8edd8-fb1b-4858-bcbb-e8c3942a5d40` (string)
+                + venue (object)
+                    + uid: `a648cb6b-5356-42a7-809e-c803a46584fa` (string)
+                    + name: Test Venue (string)
+                    + location: Fleet (string)
+                    + location_latitude: `51.2773`
+                    + location_longitude: `-0.842655`
+                + game (game)
+        + status: success (string)  
+        
+
+### Get Specific Gaming Session Invitation [GET /gamingsessions/{gamingsession_uid}/sessioninvitations/{invitation_uid}]
+
++ Parameters
+    + gamingsession_uid: '8ac35b25-d222-4276-97d0-abf2a62ee751' (string, required)
+    + invitation_uid: '04f87340-5e9c-4d6d-8863-6ed6b019ea64'(string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + session_invitation (object)
+            + uid: `e646202d-f5c4-44d7-b7e3-390ce43f308f` (string)
+            + invitation_status: Accepted (string)
+            + invitation_sender (object)
+                + uid: `1275dc64-b441-46f6-a573-957f4fe1d676` (string)
+                + username: TestMember (string)
+                + facebook_name: Test Member
+                + profile_image: http://muster.dev.flipsidegroup.com/assets/Users/0de8c173-4322-4be9-b6c6-1047dca9372b/image/profile.jpg", (string)
+                + location: Fleet (string)
+                + location_latitude: `51.2773`
+                + location_longitude: `-0.842655`
+                + joined_date: `524016000` (number)
+                + xp: 250 (number)
+                + sessions_played: 5 (number)
+                + user_status: Active (string)
+            + gaming_session (object)
+                + uid: `8ac35b25-d222-4276-97d0-abf2a62ee751` (string)
+                + name: The really great gaming session (string)
+                + description: An absolutely great gaming session. (string)
+                + start_date: `123456789` (number)
+                + end_date: `123456789` (number)
+                + player_limit: 5 (number)
+                + game_status: Active (string)
+                + location: Fleet (string)
+                + location_latitude: `51.2773`
+                + location_longitude: `-0.842655`
+                + privacy_setting: Public (string)
+                + hidden: false (boolean)
+                + result: '' (string)
+                + gamingsession_image: http://muster.dev/assets/GamingSessions/8ac35b25-d222-4276-97d0-abf2a62ee751/image/game.jpg (string)
+                + host_uid: `36f8edd8-fb1b-4858-bcbb-e8c3942a5d40` (string)
+                + venue (object)
+                    + uid: `a648cb6b-5356-42a7-809e-c803a46584fa` (string)
+                    + name: Test Venue (string)
+                    + location: Fleet (string)
+                    + location_latitude: `51.2773`
+                    + location_longitude: `-0.842655`
+                + game (game) 
+        + status: success (string)          
+
+### Create Gaming Session Invitation [POST /gamingsessions/{gamingsession_uid}/sessioninvitations]
+
++ Parameters
+    + gamingsession_uid: '8ac35b25-d222-4276-97d0-abf2a62ee751' (string, required)
+    
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+    
+    + Attributes
+        + users: (array, optional) - Array of user UIDs you wanna invite. No array = no invitations to send
+
+    + Body      
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + session_invitation (invitation)
+
+### Accept Gaming Session Invitation [PUT /gamingsessions/{gamingsession_uid}/sessioninvitations/{invitation_uid}/accept]
+
++ Parameters
+    + gamingsession_uid: '8ac35b25-d222-4276-97d0-abf2a62ee751' (string, required)
+    + invitation_uid: '04f87340-5e9c-4d6d-8863-6ed6b019ea64' (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+
+### Reject Gaming Session Invitation [PUT /gamingsessions/{gamingsession_uid}/sessioninvitations/{invitation_uid}/reject]
+
++ Parameters
+    + gamingsession_uid: '8ac35b25-d222-4276-97d0-abf2a62ee751' (string, requried)
+    + invitation_uid: '04f87340-5e9c-4d6d-8863-6ed6b019ea64'(string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+
+## Gaming Session Join Requests [/gamingsessions/{gamingsession_uid}/joinrequests]
+### Get All Gaming Session Join Requests [GET]
+
++ Parameters
+    + gamingsession_uid: '8ac35b25-d222-4276-97d0-abf2a62ee751' (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + join_requests (object)
+            + uid: `e646202d-f5c4-44d7-b7e3-390ce43f308f` (string)
+            + request_status: Accepted (string)
+            + request_recipient (object)
+                + uid: `1275dc64-b441-46f6-a573-957f4fe1d676` (string)
+                + username: TestMember (string)
+                + facebook_name: Test Member
+                + profile_image: http://muster.dev.flipsidegroup.com/assets/Users/0de8c173-4322-4be9-b6c6-1047dca9372b/image/profile.jpg", (string)
+                + location: Fleet (string)
+                + location_latitude: `51.2773`
+                + location_longitude: `-0.842655`
+                + joined_date: `524016000` (number)
+                + xp: 250 (number)
+                + sessions_played: 5 (number)
+                + user_status: Active (string)
+            + gaming_session (object)
+                + uid: `8ac35b25-d222-4276-97d0-abf2a62ee751` (string)
+                + name: The really great gaming session (string)
+                + description: An absolutely great gaming session. (string)
+                + start_date: `123456789` (number)
+                + end_date: `123456789` (number)
+                + player_limit: 5 (number)
+                + game_status: Active (string)
+                + location: Fleet (string)
+                + location_latitude: `51.2773`
+                + location_longitude: `-0.842655`
+                + privacy_setting: Public (string)
+                + hidden: false (boolean)
+                + result: '' (string)
+                + gamingsession_image: http://muster.dev/assets/GamingSessions/8ac35b25-d222-4276-97d0-abf2a62ee751/image/game.jpg (string)
+                + host_uid: `36f8edd8-fb1b-4858-bcbb-e8c3942a5d40` (string)
+                + venue (object)
+                    + uid: `a648cb6b-5356-42a7-809e-c803a46584fa` (string)
+                    + name: Test Venue (string)
+                    + location: Fleet (string)
+                    + location_latitude: `51.2773`
+                    + location_longitude: `-0.842655`
+                + game (game)
+        + status: success (string)   
+
+### Get Specific Gaming Session Join Request [GET /gamingsessions/{gamingsession_uid}/joinrequests/{joinrequest_uid}]
+
++ Parameters
+    + gamingsession_uid: '8ac35b25-d222-4276-97d0-abf2a62ee751' (string, requried)
+    + joinrequest_uid: '23fa19f0-c783-4197-86e9-337df6e864c3' (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + join_request (object)
+            + uid: `e646202d-f5c4-44d7-b7e3-390ce43f308f` (string)
+            + request_status: Accepted (string)
+            + request_recipient (object)
+                + uid: `1275dc64-b441-46f6-a573-957f4fe1d676` (string)
+                + username: TestMember (string)
+                + facebook_name: Test Member
+                + profile_image: http://muster.dev.flipsidegroup.com/assets/Users/0de8c173-4322-4be9-b6c6-1047dca9372b/image/profile.jpg", (string)
+                + location: Fleet (string)
+                + location_latitude: `51.2773`
+                + location_longitude: `-0.842655`
+                + joined_date: 524016000 (number)
+                + xp: 250 (number)
+                + sessions_played: 5 (number)
+                + user_status: Active (string)
+            + gaming_session (object)
+                + uid: `8ac35b25-d222-4276-97d0-abf2a62ee751` (string)
+                + name: The really great gaming session (string)
+                + description: An absolutely great gaming session. (string)
+                + start_date: `123456789` (number)
+                + end_date: `123456789` (number)
+                + player_limit: 5 (number)
+                + game_status: Active (string)
+                + location: Fleet (string)
+                + location_latitude: `51.2773`
+                + location_longitude: `-0.842655`
+                + privacy_setting: Public (string)
+                + hidden: false (boolean)
+                + result: '' (string)
+                + gamingsession_image: http://muster.dev/assets/GamingSessions/8ac35b25-d222-4276-97d0-abf2a62ee751/image/game.jpg (string)
+                + host_uid: `36f8edd8-fb1b-4858-bcbb-e8c3942a5d40` (string)
+                + venue (object)
+                    + uid: `a648cb6b-5356-42a7-809e-c803a46584fa` (string)
+                    + name: Test Venue (string)
+                    + location: Fleet (string)
+                    + location_latitude: `51.2773`
+                    + location_longitude: `-0.842655`
+                + game (game)
+        + status: success (string)    
+
+
+### Create Gaming Session Join Request [POST /gamingsessions/{gamingsession_uid}/joinrequests]
+
++ Parameters
+    + gamingsession_uid: '8ac35b25-d222-4276-97d0-abf2a62ee751' (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + session_join_request (object)
+            + uid: `243ab652-70cd-4ab5-9057-7bb3570116d5` (string)
+            + join_request_status: Pending (string)
+        + status: success (string)    
+
+### Accept Gaming Session Join Request [PUT /gamingsessions/{gamingsession_uid}/joinrequests/{joinrequest_uid}/accept]
+
++ Parameters
+    + gamingsession_uid: '8ac35b25-d222-4276-97d0-abf2a62ee751' (string, required)
+    + joinrequest_uid: '23fa19f0-c783-4197-86e9-337df6e864c3' (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+
+### Reject Gaming Session Join Request [PUT /gamingsessions/{gamingsession_uid}/joinerequests/{joinrequest_uid}/reject]
+
++ Parameters
+    + gamingsession_uid: '8ac35b25-d222-4276-97d0-abf2a62ee751' (string, required)
+    + joinrequest_uid: '23fa19f0-c783-4197-86e9-337df6e864c3' (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+
+## Gaming Session Result [/gamingsessions/{gamingsession_uid}/result]
+Sends in-app notification to all gaming session players.
+Assign XP to players.
+
+- Victory (select player to win)
+- Defeat (select player(s) who lost)
+- Stalemate
+- No Session (can edit gaming session to reschedule or cancel)
+
+### Get Gaming Session Results [GET]
+
++ Parameters
+    + gamingsession_uid: '8ac35b25-d222-4276-97d0-abf2a62ee751' (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+            + session_results (object)
+                + player: (object)
+                    + uid: `1275dc64-b441-46f6-a573-957f4fe1d676` (string)
+                    + username: TestMember (string)
+                    + facebook_name: Test Member
+            + status: success (string)
+        
+### Get Gaming Session Specific Result [GET /gamingsessions/{gamingsession_uid}/result/{user_uid}]
+
++ Parameters
+    + gamingsession_uid: '8ac35b25-d222-4276-97d0-abf2a62ee751' (string, required)
+    + user_uid: '0de8c173-4322-4be9-b6c6-1047dca9372b' (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + result: Defeat (string)
+        + status: success (string)        
+        
+### Create Gaming Session Result [POST /gamingsessions/{gamingsession_uid}/result]
+
++ Parameters
+    + gamingsession_uid: '8ac35b25-d222-4276-97d0-abf2a62ee751' (string, required)
+
++ Request
+
+    + Attributes (object)
+        + result: Victory (string, required) - Possible values: Victory, Defeat, Stalemate, No Session
+        + winners: [user_uid1, user_uid2] (array, optional) - array of winners if session result is victory
+        + commended: [user_uid1, user_uid2] (array, optional) - array of commended users 
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + result: Victory (string)
+        + status: success (string)
+        
+### Update Gaming Session Result [PUT /gamingsessions/{gamingsession_uid}/result/{user_uid}]
+
++ Parameters
+    + gamingsession_uid: '8ac35b25-d222-4276-97d0-abf2a62ee751' (string, required)
+    + user_uid: '0de8c173-4322-4be9-b6c6-1047dca9372b' (string, required)
+
++ Request
+
+    + Attributes (object)
+        + result: Victory (string, ) - Possible values: Victory, Defeat, Stalemate, No Session
+        + status: success (string)
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + result: Victory (string)
+        + status: success (string)        
+
+## Cancel Gaming Session Attendance [/users/{user_uid}/gamingsessionleave/{gamingsession_uid}]
+### Cancel Gaming Session Attendance [POST]
+
++ Parameters
+    + user_uid: '0de8c173-4322-4be9-b6c6-1047dca9372b' (string, required)
+    + gamingsession_uid: '8ac35b25-d222-4276-97d0-abf2a62ee751' (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+
+
+## Request Gaming Session Rematch [/users/{user_uid}/gamingsessions/{gamingsession_uid}/rematch]
+Can request a rematch from within notification or viewing gaming session screen. Takes a copy of the gaming session.
+### Request Gaming Session Rematch [POST]
+
++ Parameters
+    + user_uid: '0de8c173-4322-4be9-b6c6-1047dca9372b' (string, required)
+    + gamingsession_uid: '8ac35b25-d222-4276-97d0-abf2a62ee751' (string, required)
+
++ Request (application/json)
+
+    + Attributes
+        + gamingsessions (object)
+            + name: '' (string)
+            + description: '' (string)
+            + start_date: `123456789` (number)
+            + end_date: `123456789` (number)
+            + player_limit: 5 (number)
+            + game_status: '' (string)
+            + location: Fleet (string)
+            + location_latitude: `51.2773`
+            + location_longitude: `-0.842655`
+            + privacy_setting: '' (string)
+            + hidden: false (boolean)
+            + host_uid: `243ab652-70cd-4ab5-9057-7bb3570116d5` (string)
+            + venue_uid: `a648cb6b-5356-42a7-809e-c803a46584fa` (string)
+            + game_uid: `ea62395f-57a0-4798-80de-0c6663549d2d` (string)
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+
+
+# Group Venue Endpoints
+
+## Get All Venues [/venues]
+### Get All Venues [GET]
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + venues (object)
+            + uid: `a648cb6b-5356-42a7-809e-c803a46584fa` (string)
+            + name: Test Venue (string)
+            + image: '' (string)
+            + location: Fleet (string)
+            + location_latitude: `51.2773`
+            + location_longitude: `-0.842655`
+            
+### Get Specific Venue [GET /venues/{venue_uid}]
+
++ Parameters
+    + venue_uid: 'a648cb6b-5356-42a7-809e-c803a46584fa' (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + venues (object)
+            + uid: `a648cb6b-5356-42a7-809e-c803a46584fa` (string)
+            + name: Test Venue (string)
+            + image: '' (string)
+            + location: Fleet (string)
+            + location_latitude: `51.2773`
+            + location_longtitude: `-0.842655`       
+
+
+# Group Chat Endpoints - TBC
+
+## Chat Endpoints [/chat]
+
+### Get All Chats [GET]
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + chats (array[chat])
+
+### Get Specific Chat [GET /chat/{chat_uid}]
+
++ Parameters
+    + chat_uid: 'd4f8abcc-b80a-4755-8407-d9d535cfb817' (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + chat (chat)
+
+### Create Chat [POST]
++ Request (application/json)
+
+    + Attributes
+        + chat (chat)
+
++ Response 200 (application/json; charset=utf-8)
+    
+    + Attributes
+        + status: success (string)
+        + chat (chat)
+
+### Delete Chat [DELETE /chat/{chat_uid}]
+
++ Parameters
+    + chat_uid: 'd4f8abcc-b80a-4755-8407-d9d535cfb817' (string, required)
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+
+
+## Invite User To Chat [/chat/{chat_uid}/invite]
+Recipient receives in-app notification.
+### Invite User To Chat [POST]
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+
+## Message Endpoints [/chat/messages]
+Recipient receives an in-app notification.
+
+Accepts (file size limit of 2MB):
+- Photos
+- Videos
+- GIFs
+- Links
+- Emojis
+
+### Get All Messages [GET]
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + messages (array[message])
+
+### Get Specific Message [GET /chat/messages/{message_uid}]
+
++ Parameters
+    + message_uid: '1d773994-e7cd-447a-ab54-9e3f4117b673' (string, required)
+
++ Request
+    
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + message (message)
+
+### Create A Message [POST]
++ Request (application/json)
+
+    + Attributes
+        + message (message)
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+        + message (message)
+
+### Delete A Message [DELETE /chat/message/{message_uid}]
+
++ Parameters
+    + message_uid: '1d773994-e7cd-447a-ab54-9e3f4117b673' (string, required)
+
++ Request
+    
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+
+
+# Group General - TBC
+
+## Get Information [/information]
+Get information for display on any static pages and social links.
+
+Pages:
+- Terms & Conditions
+
+Social (TBC):
+- Facebook
+- Twitter
+
+### Get information [GET]
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
+
+## Send Contact Form - TBC [/contact]
+### Send Contact Form [POST]
++ Request
+    
+    + Headers
+    
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+        + status: success (string)
