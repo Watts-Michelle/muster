@@ -1,0 +1,14 @@
+ErrorCodes:
+
+  1001: The user credentials were incorrect.
+
+  2001: A field failed to validate.
+  2002: A user exists with this email address.
+  2004: A user exists with this username.
+  2003: Incorrect content type.
+
+  404:
+  4001:
+  4002:
+  4003:
+  4004:

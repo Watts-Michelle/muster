@@ -1,0 +1,162 @@
+//import fonts
+@import "https://fonts.googleapis.com/css?family=Roboto:400,300,500";
+
+$roboto:  'Roboto', sans-serif;
+
+@import "bootstrap";
+
+//settings
+@import "colors";
+
+@import "partials/_test";
+
+html {
+    background-color: black;
+}
+body {
+    background-color: black;
+    color: white;
+    margin-left: 20px;
+    margin-right: 20px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-style: normal;
+    font-variant: normal;
+}
+h1 {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 26px;
+}
+h2 {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 18px;
+}
+h3 {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
+}
+p,ul,li {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 20px;
+}
+blockquote {
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 30px;
+}
+pre {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+}
+
+.row {
+    p {
+        text-align: center;
+    }
+}
+
+#SecurityLogin {
+    text-align: center;
+    h1 {
+        font-size: 34px;
+        font-weight: 500;
+        line-height: 35px;
+        margin: 20px 0 0;
+        text-transform: uppercase;
+    }
+    h4 {
+        font-weight: 100;
+        font-size: 16px;
+        text-transform: lowercase;
+    }
+    p {
+        margin: 15px 0;
+        font-weight: 100;
+        font-size: 14px;
+    }
+    .social {
+        margin: 30px 0 0 0;
+        img {
+            margin: 0 10px;
+            width: 44px;
+        }
+    }
+    #MemberLoginForm_LoginForm {
+        input {
+            color: black;
+            border-radius: 100px;
+            height: 32px;
+            width: 180px;
+            border: none;
+            padding: 15px;
+
+        }
+        .text {
+            display: inline-block;
+        }
+        .checkbox {
+            height: auto;
+            width: auto;
+            .checkbox {
+                display: inline-block;
+            }
+        }
+        .Actions {
+            input {
+                background-color: #fc5f46;
+                color: white;
+                line-height: 32px;
+                padding: 0 18px;
+            }
+            a {
+                text-decoration: none;
+                color: white;
+            }
+            p {
+                margin: 0 0 10px;
+            }
+        }
+    }
+}
+form {
+    margin: 0 auto;
+    text-align: center;
+    input {
+        color: black;
+        border-radius: 100px;
+        height: 32px;
+        width: 300px;
+        border: none;
+        padding: 15px;
+
+    }
+    .text {
+        display: inline-block;
+    }
+    .checkbox {
+        height: auto;
+        width: auto;
+        .checkbox {
+            display: inline-block;
+        }
+    }
+    .Actions {
+        input {
+            background-color: #fc5f46;
+            color: white;
+            line-height: 32px;
+            padding: 0 18px;
+        }
+        a {
+            text-decoration: none;
+            color: white;
+        }
+        p {
+            margin: 0 0 10px;
+        }
+    }
+}

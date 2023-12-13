@@ -1,0 +1,17 @@
+---
+Name: API routes
+After: framework/routes#coreroutes
+---
+Director:
+  rules:
+
+    'api/v1/auth/login': 'Authorisation_Controller'
+    'api/v1/auth/logout': 'Logout_Controller'
+
+    'api/v1/users': 'Users_Controller'
+    'api/v1/games': 'Games_Controller'
+    'api/v1/badges': 'Badges_Controller'
+    'api/v1/gamingsessions': 'GamingSessions_Controller'
+    'api/v1/venues': 'Venues_Controller'
+
+    'api/v1/chat': 'Chat_Controller'
